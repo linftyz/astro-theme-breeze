@@ -1,0 +1,51 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import site from "@/config/site";
+
+const friends = await getCollection("friends");
+---
+
+<Layout
+  title={site.labels.friendsTitle}
+  description={site.labels.friendsDescription}
+>
+  <div class="mx-auto max-w-2xl p-8 md:p-16">
+    <section class="mb-24">
+      <header class="mb-12">
+        <h2 class="mb-4 text-3xl font-bold">{site.labels.friendsTitle}</h2>
+        <p class="mb-12 text-sm font-light text-muted-foreground italic">
+          {site.labels.friendsDescription}
+        </p>
+      </header>
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        {
+          friends.map((friend) => (
+            <a
+              href={friend.data.link}
+              class="group flex items-center gap-5 rounded-2xl border border-border/40 p-4 hover:bg-muted/30"
+            >
+              <Image
+                src={friend.data.avatar}
+                width={48}
+                height={48}
+                alt={friend.data.name}
+                loading={"eager"}
+                class="rounded-xl bg-muted transition-transform group-hover:rotate-6"
+              />
+              <div class="flex flex-col">
+                <span class="text-sm font-bold text-foreground/80 group-hover:text-primary">
+                  {friend.data.name}
+                </span>
+                <span class="line-clamp-1 text-[11px] text-muted-foreground">
+                  {friend.data.description}
+                </span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</Layout>

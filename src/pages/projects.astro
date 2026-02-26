@@ -1,0 +1,64 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import site from "@/config/site";
+
+const projects = await getCollection("projects");
+---
+
+<Layout title={site.labels.projectsTitle} description={site.labels.projectsDescription}>
+  <div class="mx-auto max-w-2xl p-8 md:p-16">
+    <header class="mb-16">
+      <h2 class="mb-4 text-3xl font-bold tracking-tight">
+        {site.labels.projectsTitle}
+      </h2>
+      <p class="text-sm font-light text-muted-foreground italic">
+        {site.labels.projectsDescription}
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 gap-6">
+      {
+        projects.map((project) => (
+          <a
+            href={project.data.link}
+            class="group flex h-full flex-col rounded-3xl border border-border/50 bg-muted/20 p-6 shadow-sm hover:border-primary/30 hover:bg-muted/40"
+          >
+            <div class="mb-6 flex items-start justify-between">
+              <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary transition-transform group-hover:scale-110">
+                {project.data.image ? (
+                  <Image
+                    src={project.data.image}
+                    width={32}
+                    height={32}
+                    alt={`${project.data.title}'s logo'`}
+                    loading={"eager"}
+                  />
+                ) : (
+                  <span>✦</span>
+                )}
+              </div>
+              <span class="rounded-full border border-primary/10 bg-primary/5 px-2 py-0.5 text-[9px] font-bold tracking-widest text-primary uppercase">
+                {project.data.status}
+              </span>
+            </div>
+            <h3 class="mb-3 text-xl font-bold group-hover:text-primary">
+              {project.data.title}
+            </h3>
+            <p class="mb-6 flex-1 text-sm leading-relaxed font-light text-muted-foreground italic">
+              {project.data.description}
+            </p>
+            <div class="flex flex-wrap gap-2">
+              {project.data.tech.map((t) => (
+                <span class="font-mono text-[11px] text-muted-foreground/40">
+                  #{t}
+                </span>
+              ))}
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</Layout>

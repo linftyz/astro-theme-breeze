@@ -1,0 +1,40 @@
+---
+import { formatDate } from "@/utils/date";
+import { Icon } from "astro-icon/components";
+import type { CollectionEntry } from "astro:content";
+import { getEntry } from "astro:content";
+
+interface Props {
+  post: CollectionEntry<"posts">;
+}
+
+const { post } = Astro.props;
+const category = await getEntry(
+  post.data.category.collection,
+  post.data.category.id,
+);
+---
+
+<article
+  class="group flex cursor-pointer items-center justify-between border-b border-border/40 py-6 last:border-0"
+>
+  <div>
+    <a
+      href={`/posts/${post.id}`}
+      class="text-lg font-semibold text-foreground/80 group-hover:text-primary"
+    >
+      {post.data.title}
+    </a>
+    <p
+      class="mt-2 font-mono text-[11px] text-muted-foreground italic opacity-60"
+    >
+      {formatDate(post.data.createdAt)} —
+      <a href={`/categories/${category?.id}`} class="hover:text-primary">
+        {category?.data.name}
+      </a>
+    </p>
+  </div>
+  <span class="text-border group-hover:translate-x-1 group-hover:text-primary">
+    <Icon name="mdi:arrow-right" />
+  </span>
+</article>

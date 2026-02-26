@@ -1,0 +1,29 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import site from "@/config/site";
+---
+
+<Layout title={site.labels.toolsTitle} description={site.labels.toolsTitle}>
+  <div class="mx-auto max-w-2xl p-8 md:p-16">
+    <h2 class="mb-12 text-3xl font-bold">{site.labels.toolsTitle}</h2>
+
+    <div class="space-y-12">
+      {
+        site.tools.map((category) => (
+          <section>
+            <h3 class="mb-6 border-b border-border pb-2 text-[10px] font-bold tracking-[0.2em] text-primary uppercase">
+              {category.name}
+            </h3>
+            <ul class="grid grid-cols-2 gap-4 text-sm font-light text-muted-foreground">
+              {category.items.map((item) => (
+                <li class="flex items-center gap-2">
+                  <span class="h-1 w-1 rounded-full bg-primary" /> {item}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</Layout>

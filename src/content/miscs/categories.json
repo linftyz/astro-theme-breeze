@@ -1,0 +1,21 @@
+[
+  {
+    "name": "Technology",
+    "slug": "technology",
+    "description": "Articles about web development and programming"
+  },
+  {
+    "name": "Design",
+    "slug": "design",
+    "description": "Thoughts on UI/UX and visual design"
+  },
+  {
+    "name": "Life",
+    "slug": "life",
+    "description": "Daily life and personal reflections"
+  },
+  {
+    "name": "Uncategorized",
+    "slug": "uncategorized"
+  }
+]

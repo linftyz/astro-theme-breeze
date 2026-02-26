@@ -1,0 +1,52 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { getPosts } from "@/utils/post";
+import { Icon } from "astro-icon/components";
+import { getCollection } from "astro:content";
+
+const allCategories = await getCollection("categories");
+const allPosts = await getPosts();
+
+const categoryCounts = allPosts.reduce((acc: Record<string, number>, post) => {
+  const catId = post.data.category.id;
+  acc[catId] = (acc[catId] || 0) + 1;
+  return acc;
+}, {});
+---
+
+<Layout title="Categories" description="Browse all categories.">
+  <div class="mx-auto max-w-2xl p-8 md:p-16">
+    <header class="mb-16">
+      <h2 class="mb-4 text-3xl font-bold">Categories</h2>
+      <p class="mb-12 text-sm font-light text-muted-foreground italic">
+        {allCategories.length} categories in total.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+      {
+        allCategories.map((cat) => (
+          <a
+            href={`/categories/${cat.data.slug}`}
+            class="group relative flex h-full flex-col rounded-3xl border border-border/50 bg-muted/20 p-8 shadow-sm hover:border-primary/30 hover:bg-card"
+          >
+            <div class="mb-6 flex items-start justify-between">
+              <h3 class="text-xl font-bold group-hover:text-primary">
+                {cat.data.name}
+              </h3>
+              <span class="rounded-lg bg-border/30 px-2 py-1 font-mono text-[10px] text-muted-foreground">
+                {categoryCounts[cat.id] || 0}
+              </span>
+            </div>
+            <p class="flex-1 text-sm leading-relaxed font-light text-muted-foreground italic">
+              {cat.data.description || "No description"}
+            </p>
+            <div class="mt-6 flex items-center gap-1 text-[10px] font-bold text-primary opacity-0 group-hover:opacity-100">
+              View all posts <Icon name="mdi:arrow-right" />
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</Layout>

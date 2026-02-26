@@ -1,0 +1,49 @@
+---
+import site from "@/config/site";
+
+const { enabled, provider, artalk } = site.comments;
+---
+
+{
+  enabled && provider === "artalk" && artalk && (
+    <div class="animate-in fade-in duration-1000">
+      <div
+        id="atk-comments"
+        data-server={artalk.server}
+        data-site-name={site.meta.title}
+      />
+    </div>
+  )
+}
+
+{
+  enabled && provider === "artalk" && (
+    <script>
+      import "artalk/dist/Artalk.css";
+      import Artalk from "artalk";
+
+      document.addEventListener("astro:page-load", () => {
+        const el = document.querySelector<HTMLElement>("#atk-comments");
+        if (!el) return;
+
+        const server = el.dataset.server;
+        const siteName = el.dataset.siteName;
+        if (!server) return;
+
+        const artalk = Artalk.init({
+          el: "#atk-comments",
+          server,
+          site: siteName || document.title,
+          pageTitle: document.title,
+          pageKey: document.location.pathname,
+        });
+
+        artalk.on("comment-inserted", function () {
+          if (Object.hasOwn(window, "showToast")) {
+            (window as any).showToast("Comment submitted", "success");
+          }
+        });
+      });
+    </script>
+  )
+}
