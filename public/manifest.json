@@ -1,7 +1,7 @@
 {
-  "name": "临风听雨",
-  "short_name": "Linfty",
-  "description": "保持好奇，无限进步",
+  "name": "Breeze",
+  "short_name": "Breeze",
+  "description": "",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
